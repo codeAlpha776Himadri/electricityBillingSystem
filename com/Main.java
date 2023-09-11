@@ -2,13 +2,16 @@ package com ;
 
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.Random ;
+
+import com.exceptions.InvalidCredentialsException;
+import com.models.* ;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         
         Scanner scanner = new Scanner(System.in);
         ArrayList<Customer> customers = new ArrayList<>();
+
         Admin admin = new Admin("admin", "adminpass");
 
         while (true) {
@@ -33,7 +36,7 @@ public class Main {
                     if (adminUsername.equals(admin.getUsername()) && adminPassword.equals(admin.getPassword())) {
                         adminMenu(admin, customers, scanner);
                     } else {
-                        System.out.println("Invalid credentials for Admin.");
+                        throw new InvalidCredentialsException();
                     }
                     break;
 
@@ -104,7 +107,7 @@ public class Main {
                         double unitsConsumed = scanner.nextDouble();
                         double billAmount = admin.calculateBill(customer, unitsConsumed);
                         System.out.println("Bill calculated successfully.");
-                        System.out.println("Previous Bill: $" + customer.getPreviousBill());
+                        System.out.println("Previous Bill: $" + customer.getPreviousBills());
                         System.out.println("Current Bill: $" + customer.getCurrentBill());
                     } else {
                         System.out.println("Customer not found.");
@@ -146,7 +149,7 @@ public class Main {
                 case 3:
                     System.out.print("Enter units consumed: ");
                     double unitsConsumed = scanner.nextDouble();
-                    double billAmount = customer.getCurrentBill();
+                    Bill billAmount = customer.getCurrentBill();
                     System.out.println("Current Bill: $" + billAmount);
                     break;
 
@@ -194,7 +197,7 @@ public class Main {
 
     private static void viewPreviousBills(Customer customer) {
         System.out.println("\nPrevious Bills for " + customer.getName() + ":");
-        System.out.println("Previous Bill: $" + customer.getPreviousBill());
+        System.out.println("Previous Bills: $" + customer.getPreviousBills());
         System.out.println("Current Bill: $" + customer.getCurrentBill());
     }
     
